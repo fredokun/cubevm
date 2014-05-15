@@ -1,0 +1,42 @@
+/* deadlocked version */
+
+def SynAck(syn,ack) = syn!(),ack?(),SynAch(*);
+
+def Syn(syn) = syn!(),Syn(*);
+
+def Chair(sit,leave) = SynAck(sit,leave);
+
+def Fork(pickup,putdown) = SynAck(pickup,putdown);
+
+def Spaghetti(eat) = Syn(eat);
+
+def Philo(sit,pickup1,pickup2,putdown1,putdown2, eat,leave) =
+  sit?(), [ pickup1?(),pickup2?(),
+            PhiloEat(sit,pickup1,pickup2,putdown1,putdown2,eat,leave) ]
+       ++ [ pickup2?(),pickup1?(),
+            PhiloEat(sit,pickup1,pickup2,putdown1,putdown2,eat,leave) ];
+
+def PhiloEat(sit,pickup1,pickup2,putdown1,putdown2, eat, leave) =
+   [ eat?(),PhiloEat(*) ]
+++ [ putdown1!(),putdown2!(),leave!(),
+     Philo(sit,pickup1,pickup2,putdown1,putdown2,eat,leave) ]
+++ [ putdown2!(),putdown1!(),leave!(),
+     Philo(sit,pickup1,pickup2,putdown1,putdown2,eat,leave) ];
+
+def MakePhilos(n,max,precpick,precdown,start) =
+  if n<=max then
+    new(sit,eat,leave,pickup,putdown),
+     [ MakePhilos(n+1,max,pickup,putdown,start) ||
+       start?(),Chair(sit,leave) ||
+       Fork(pickup,putdown) ||
+       Spaghetti(eat) ||
+       Philo(sit,precpick,precdown,pickup,putdown,eat,leave) ]
+  else
+    StartPhilos(1,max,start);
+
+def StartPhilos(n,max,start) =
+  if n<=max then start!(), StartPhilos(n+1,max,start);
+
+new(start,pickup,putdown), 
+[ MakePhilos(1,5,pickup,putdown,start) ||
+  Fork(pickup,putdown) ]

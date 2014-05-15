@@ -1,0 +1,17 @@
+
+// note : this is a reinterpretation of the canonical
+// lucid example
+
+def GenDouble(i,n,gen) = if i<n then gen!i,GenDouble(i*2,n,gen);
+
+def Average(in,out,n,avg) = in?(val),let(navg=(avg+val)/(n+1)),out!navg,
+                            Average(in,out,n+1,navg);
+
+def PrintOut(in) = in?(val),#println("Out = "+val),PrintOut(*);
+
+// main program N = 1000
+
+new(i), new(o),
+  [ GenDouble(1,1000,o) || Average(i,o,0,0) ||
+    PrintOut(o) ]
+ 

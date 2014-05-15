@@ -1,0 +1,5 @@
+
+def Fact(n,acc) = if n = 0 then #println(acc) else #println(n),Fact(n-1,n*acc);
+
+Fact(12,1) || Fact(8,1)
+

@@ -1,0 +1,9 @@
+
+// test of reactive mode
+
+def React(c) = c?(x),#println(x),React(c);
+
+new(c1),new(c2),new(c3),
+[ #println("Start"),c1!(1),c2!(2),c3!(3),#println("End") ||
+  react(c1),React(c1) || react(c2),React(c2) || react(c3),React(c3) ]
+

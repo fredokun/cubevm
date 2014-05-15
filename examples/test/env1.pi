@@ -1,0 +1,11 @@
+// test of environment size computation
+// with if
+
+def Call1(x,y,z) = if (x=1) then new(c), y!(c) else new(d),z!(d);
+
+
+new(x,y,z),
+  [ Call1(x,y,z) || x!(1) 
+    || y?(v),#println("Received on y")
+    || z?(w),#println("Received on z") ]
+

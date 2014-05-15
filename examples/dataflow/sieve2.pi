@@ -1,0 +1,16 @@
+
+// note : pair numbers are not primes
+def GenInt2(i,n,gen) = if i<n then gen!(i),GenInt2(i+2,n,gen);
+
+def PrimeFilter(in,n,out) = in?(x),if (x % n) = 0 then PrimeFilter(*)
+                                  else out!(x),PrimeFilter(*);
+
+def EndPrimeFilter(in) = in?(x), #print(x),#println(" is prime"), new(out),
+        [ own(out),EndPrimeFilter(out) || react(in),PrimeFilter(in,x,out) ];
+
+// main program N = 1000
+
+new(gen), new(out),
+  [ GenInt2(3,10000,gen) || react(gen),PrimeFilter(gen,2,out) ||
+    react(out),EndPrimeFilter(out) ]
+ 

@@ -1,0 +1,18 @@
+
+def Pinger(ping,pong) = ping?(x),                     // input on ping
+                      #print("Pinger: "),#println(x), // print value
+                      pong!(x),                         // answer on pong
+                      Pinger(ping,pong);              // recurse
+
+def Ponger(ping,pong) = pong?(x),                     // input on pong
+                      #print("Ponger: "),#println(x), // print value
+                      ping!(x),                         // answer on ping
+                      Ponger(ping,pong);              // recurse
+
+
+
+// main program
+
+new(ping,pong),
+ [ Pinger(ping,pong) || Ponger(ping,pong) || ping!("beep") ]
+

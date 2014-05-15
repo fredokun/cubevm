@@ -1,0 +1,10 @@
+
+def Tak(x,y,z,r) =
+                 if y >= x then r!z
+                 else new(r1),new(r2),new(r3),
+           [ Tak@3(x-1,y,z,r1) | Tak@3(y-1,x,z,r2) | Tak@3(z-1,x,y,r3) |
+             r1?(nx)@1,r2?(ny)@2,r3?(nz),Tak(nx,ny,nz,r) ];
+
+// usual call is Tak(24,16,8,r)
+new(r), [ Tak(48,32,16,r) || r?(res),#println("Result is = "+res) ]
+

@@ -1,0 +1,145 @@
+
+def cell_asking(self,v1,v2,v3,v4,v,r) =
+  #println("Cellule de valeur "+v+" demande"),
+  new (vois),
+  [ [ if (not (v1 = NONE))
+      then
+        v1!(v),
+        self?(vn),
+        vois!(vn)
+      else
+        vois!() ]
+    ||
+      vois?(vv),
+      [ [ if (not (v2 = NONE))
+          then
+            v2!(v),
+            self?(vn),
+            vois!(vv+vn)
+          else
+            vois!(vv) ]
+      ||
+        vois?(vv),
+        [ [ if (not (v3 = NONE))
+            then
+              v3!(v),
+              self?(vn),
+              vois!(vv+vn)
+            else
+              vois!(vv) ]
+        ||
+          vois?(vv),
+          [ if (not (v4 = NONE))
+            then
+              v4!(v),
+              self?(vn),
+              r!(vv+vn)
+            else
+              r!(vv)
+          ]
+        ]
+      ]
+    ];
+
+
+def cell_answering(self,v1,v2,v3,v4,v,r) =
+  #println("Cellule de valeur "+v+" répond"),
+  new (vois),
+  [ [ if (not (v1 = NONE))
+      then
+        self?(vn),
+        v1!(v),
+        vois!(vn)
+      else
+        vois!() ]
+    ||
+      vois?(vv),
+      [ [ if (not (v2 = NONE))
+          then
+            self?(vn),
+            v2!(v),
+            vois!(vv+vn)
+          else
+            vois!(vv) ]
+      ||
+        vois?(vv),
+        [ [ if (not (v3 = NONE))
+            then
+              self?(vn),
+              v3!(v),
+              vois!(vv+vn)
+            else
+              vois!(vv) ]
+        ||
+          vois?(vv),
+          [ if (not (v4 = NONE))
+            then
+              self?(vn),
+              v4!(v),
+              r!(vv+vn)
+            else
+              r!(vv)
+          ]
+        ]
+      ]
+    ];
+
+
+def cell(self,x,y,n,nw,w,sw,s,se,e,ne,v) =
+  #println("Cellule ("+x+","+y+") a la valeur "+v),
+  new(vois),
+  new(tous),
+  [
+    [
+      if ((x % 2 = 0) and (y % 2 = 0))
+      then
+        [  cell_asking(self,n,e,s,w,v,vois)
+        || vois?(vv),
+           [  cell_asking(self,ne,se,sw,nw,v,vois)
+           || vois?(vv2),
+              tous!(vv+vv2) ] ]
+      else
+        if ((x % 2 = 1) and (y % 2 = 0))
+        then
+          [  cell_answering(self,n,w,s,e,v,vois)
+          || vois?(vv),
+             [  cell_answering(self,nw,sw,se,ne,v,vois)
+             || vois?(vv2),
+                tous!(vv+vv2) ] ]
+        else
+          if ((x % 2 = 1) and (y % 2 = 1))
+          then
+            [  cell_asking(self,s,w,n,e,v,vois)
+            || vois?(vv),
+               [  cell_answering(self,sw,nw,ne,se,v,vois)
+               || vois?(vv2),
+                  tous!(vv+vv2) ] ]
+          else
+          // ((x % 2 = 0) and (y % 2 = 1))
+            [  cell_answering(self,s,e,n,w,v,vois)
+            || vois?(vv),
+               [  cell_asking(self,se,ne,nw,sw,v,vois)
+               || vois?(vv2),
+                  tous!(vv+vv2) ] ] 
+    ]
+  ||
+    tous?(vv),
+    if ((v=0) and (vv=3))
+    then cell(self,x,y,n,nw,w,sw,s,se,e,ne,1)
+    else 
+      if ((v=1) and (vv > 1) and (vv < 4))
+      then cell(self,x,y,n,nw,w,sw,s,se,e,ne,1)
+      else cell(self,x,y,n,nw,w,sw,s,se,e,ne,0)
+  ];
+
+
+new (a_0_0),
+new (a_0_1), new (a_1_0), new (a_1_1),
+#print ("La cellule (0,0) a le canal : "), #println(a_0_0),
+#print ("La cellule (0,1) a le canal : "), #println(a_0_1),
+#print ("La cellule (1,0) a le canal : "), #println(a_1_0),
+#print ("La cellule (1,1) a le canal : "), #println(a_1_1),
+[ cell(a_0_0,0,0,a_0_1,NONE,NONE,NONE,NONE,NONE,a_1_0,a_1_1,0)
+  || cell(a_0_1,0,1,NONE,NONE,NONE,NONE,a_0_0,a_1_0,a_1_1,NONE,0)
+  || cell(a_1_0,1,0,a_1_1,a_0_1,a_0_0,NONE,NONE,NONE,NONE,NONE,0)
+  || cell(a_1_1,1,1,NONE,NONE,a_0_1,a_0_0,a_1_0,NONE,NONE,NONE,0) ]

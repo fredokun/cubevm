@@ -1,0 +1,11 @@
+def EntryNode(prev,next,print,val) =
+    [ print?(),#println("Print = "+val),next!(),EntryNode(*) ]
+ ++ [ prev?(),EntryNode(*) ];
+
+def InnerNode(prev,next,val) = 
+    prev?(),#println("Print = "+val),next!(),InnerNode(*);
+
+new(next1,next2,next3,print),
+  [ EntryNode(next3,next1,print,1) || 
+    InnerNode(next1,next2,2) || InnerNode(next2,next3,3) || 
+    print!() ]

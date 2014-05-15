@@ -1,0 +1,8 @@
+
+def Fib(n,acc,res) = if n<=2 then res!1+acc
+                 else new(r1),new(r2),
+                   [ Fib(n-2,acc,r1) || react(r1),r1?(a),Fib(n-1,a,r2) ||
+                     react(r2),r2?(b),res!b ];
+
+new(r), [ Fib(27,0,r) || react(r),r?(v),#print("Result is : "),#print(v),#println("") ]
+

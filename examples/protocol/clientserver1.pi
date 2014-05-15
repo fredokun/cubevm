@@ -1,0 +1,27 @@
+
+
+// Micro-pi version of client/server
+
+
+def Server(connect1,connect2,connect3,
+           use1,use2,use3,
+           exit) = #println("Server loop..."),[
+    [ connect1?(), #println("Connect 1"),[ Server(*) || Service(use1) ] ]
+ ++ [ connect2?(), #println("Connect 2"),[ Server(*) || Service(use2) ] ]
+ ++ [ connect3?(), #println("Connect 3"),[ Server(*) || Service(use3) ] ]
+ ++ [ exit?(),#println("== Premature end of server ==") ] ];
+
+// A simple echo service (here abstracted without value passing !)
+def Service(use) = use?(),use!(),Service(use);
+
+def Client(n,use,nb) = 
+  if nb>0 then use!(),use?(),#println("Client "+n+" echoed")
+               ,Client(n,use,nb-1);
+
+// The system
+
+new(connect1,connect2,connect3,use1,use2,use3,exit),
+ [ Server(connect1,connect2,connect3,use1,use2,use3,exit) 
+   || connect2!(),Client(2,use2,100)
+   || connect3!(),Client(3,use3,100)
+   || connect1!(),Client(1,use1,100) ]

@@ -1,0 +1,3 @@
+/* simple monadic commmunication */
+
+new(c), [ c!(12) || c?(x),#println("received = "+x) ]

@@ -1,0 +1,3 @@
+/* simple polyadic commmunication */
+
+new(c), [ c!(12,"hello") || c?(x,y),#println("received = ("+x+","+y+")") ]

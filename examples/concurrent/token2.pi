@@ -1,0 +1,21 @@
+
+// a simple token ring algorithm
+// one process (the Start one) must know the number of
+// processes in the ring
+
+// since we use freshness of channels as identity
+// we show here how the passed channels may be used
+// We should see n-1 "Pass!" and 1 "Hit!"
+
+def Printer(c) = c?(x),#println(x),Printer(c);
+
+def Pass(i,o,c,f,n) =    [ i?(x),if x = c then c!"Hit!",f!1,Pass(i,o,c,f,0)
+                              else x!"Pass!",o!x,Pass(i,o,c,f,n) ]
+                     ++  [ f?(m),if n=0 then #println("OK "+m) else f!m+1 ];
+
+def Process(i,o,f) = new(c),Pass(i,o,c,f,-1);
+
+def Start(i,o,f) = new(c), [ o!c,Pass(i,o,c,f,-1) || Printer(c) ];
+
+new(l1),new(l2),new(l3),new(l4),new(f),
+  [ Start(l1,l2,f) || Process(l2,l3,f) || Process(l3,l4,f) || Process(l4,l1,f) ]

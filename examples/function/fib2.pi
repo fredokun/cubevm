@@ -1,0 +1,4 @@
+
+def FibIt(n,next,res,r) = if n=0 then r!(next) else FibIt(n-1,next+res,next,r);
+
+new(r), [ FibIt(5,0,1,r) || r?(v),#println("Result is : "+v) ]

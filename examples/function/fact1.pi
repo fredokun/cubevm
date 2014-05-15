@@ -1,0 +1,7 @@
+
+def Fact(n,acc,r) = if n=0 then r!(acc) else Fact(n-1,n*acc,r);
+
+new(ret), [ Fact(10,1,ret) || ret?(v),#println("Result is = "+v) ]
+
+
+

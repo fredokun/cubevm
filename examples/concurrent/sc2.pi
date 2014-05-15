@@ -1,0 +1,17 @@
+// channel passing critical section
+def SC(n,lock) = lock?(x),x!(n),lock!(x);
+
+def Feedback(fbk) = fbk?(n),#println("Lock taken by "+n),Feedback(*);
+
+def Launch(n,max,lock,start) = 
+        if n<max 
+        then [  Launch(n+1,max,lock,start) || 
+                #println("Start process : "+n),SC(n,lock) ]
+        else #println("Go !"),start!();
+        
+new(lock,fbk,start),
+  [ Launch(1,250,lock,start) || Feedback(fbk) || start?(),lock!(fbk) ]
+
+
+
+

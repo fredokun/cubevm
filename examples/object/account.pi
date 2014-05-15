@@ -1,0 +1,13 @@
+
+// an example of objet-like encoding in pi-cube
+
+def Account(deposit,withdraw,getbalance,balance) =
+    [ deposit?(amount), Account(deposit,withdraw,getbalance,balance+amount) ]
+ ++ [ withdraw?(amount), Account(deposit,withdraw,getbalance,balance-amount) ]
+ ++ [ getbalance?(x),getbalance!(balance),Account(deposit,withdraw,getbalance,balance) ];
+
+
+new(deposit),new(withdraw),new(get), 
+  [ Account(deposit,withdraw,get,0) || 
+    deposit!(100),withdraw!(50),get!(1),get?(v),#println("Balance is = "+v) ]
+

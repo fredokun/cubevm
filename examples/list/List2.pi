@@ -1,0 +1,17 @@
+
+def CurNode(val,gonext,ask,get,prev,next) =
+        ask?(x),get!val,CurNode(val,gonext,ask,get,prev,next)
+     ++ gonext?(x),next!gonext,next!ask,next!get,
+        if prev = NONE then 0 else Node(val,prev,next);
+
+def Node(val,prev,next) =
+        prev?(gonext),prev?(ask),prev?(get),CurNode(val,gonext,ask,get,prev,next);
+
+// (define L '(1 2 3))
+// (define L (cdr L))
+// (display (car L))
+
+new(gn),new(ask),new(get),new(l01),new(l12),
+ [ gn!1@1,ask!1@2,get?(x),#println("Value is = "+x) |
+   CurNode@3(1,gn,ask,get,NONE,l01) | Node(2,l01,l12) | Node(3,l12,NONE) ]
+

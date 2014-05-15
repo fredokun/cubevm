@@ -1,0 +1,11 @@
+
+def SC(n,lock) = lock?(x),#println("Lock taken by "+n),
+                 lock!(n);
+
+def Launch(n,max,lock,start) = 
+        if n<max 
+        then [ Launch(n+1,max,lock,start) || #println("Start process : "+n),SC(n,lock) ] 
+        else #println("Go !"),start!();
+
+new(lock,start), [ Launch(1,#intfromstr(#arg(2)),lock,start) || start?(),lock!(0) ]
+

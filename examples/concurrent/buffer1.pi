@@ -1,0 +1,29 @@
+
+/* a one place buffer */
+
+def Cell(read,write,val) =
+   [ write?(nval), #println("Written: "+nval), Cell(read,write,nval) ]
+++ [ read!(val), Cell(*) ];
+
+def Reader(id,read,fuel) =
+  if fuel>0 then
+    read?(val), #println("Reader"+ id + " reads: "+val+" (fuel=" + fuel + ")"), Reader(id,read,fuel-1);
+
+def Writer(write,num,fuel) =
+  if fuel>0 then
+    write!(num), #println("Writer writes: "+num), Writer(write,num,fuel-1);
+
+def SpawnReaders(nbR,read,fuel) =
+  if nbR>0 then
+    [ SpawnReaders(nbR-1,read,fuel) || Reader(nbR,read,fuel) ];
+
+def SpawnWriters(nbW,write,fuel) = 
+  if nbW>0 then
+    [ SpawnWriters(nbW-1,write,fuel) || Writer(write,nbW,fuel) ];
+
+/* main */
+new(read,write), [ SpawnReaders(3,read,4) || SpawnWriters(2,write,4)
+                   || Cell(read,write,-1) ]
+
+
+  

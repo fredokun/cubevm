@@ -1,0 +1,6 @@
+// this illustrates chain reaction (*not* explosive !)
+// this version adds polyadic values
+new(c,d,e),
+ [ c!(3,4,5),e?(x),#println("x = "+x)
+   || react(c),c?(x,y,z),d!(x*y,x*z),c?(x,y,z),e!(x+y*z)
+   || react(d),d?(x,y),c!(2*x,2*y,x+y) ]

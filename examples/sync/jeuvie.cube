@@ -1,0 +1,188 @@
+def cell(self,x,y,n,nw,w,sw,s,se,e,ne,v) =
+    new(sync), 
+    [ self!(v), self!(v), self!(v), self!(v), self!(v), self!(v), self!(v), self!(v), sync!(0)
+    || n?(vn),nw?(vnw),w?(vw),sw?(vsw),s?(vs),se?(vse),e?(ve),ne?(vne), sync?(x),
+       let(neigh=vn+vnw+vw+vsw+vs+vse+ve+vne),
+       if ((v=0) and (neigh=3))
+       then cell(self,x,y,n,nw,w,sw,s,se,e,ne,1)
+       else if (v=1 and neigh > 1 and neigh < 4)
+       then cell(self,x,y,n,nw,w,sw,s,se,e,ne,1)
+       else cell(self,x,y,n,nw,w,sw,s,se,e,ne,0)];
+
+def cellid(self,x,y,n,nw,w,sw,s,se,e,ne,v) =
+#print("Cellule ("+x+",
+    "+y+"), de valeur "+v+" démarrée avec les canaux : "),
+    #print(self), #print(" pour moi et mes voisines : "),
+    #print(n), #print(" "),
+    #print(nw), #print(" "),
+    #print(w), #print(" "),
+    #print(sw), #print(" "),
+    #print(s), #print(" "),
+    #print(se), #print(" "),
+    #print(e), #print(" "),
+    #print(ne), #print(" ")
+;
+
+def cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,v) =
+  #println("Générateur pour ("+x+", "+y+")"),
+  if (v=-1)
+  then
+    if ((y = ymax) or (x = 1))
+    then
+      cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,0)
+    else
+      if (x = xmax)
+      then
+        cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,2)
+      else
+        cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,3)
+  else
+    if ((v=0) and ((((not (sw = NONE)) or (x = 1)) and (not (s = NONE)) and ((not (se = NONE)) or (x = xmax))) or (y = 1)))
+    then 
+      new(msg), new(sync),
+        [ if (not (sw = NONE))
+          then
+            sw!(msg),
+            msg!(2),
+            sync!(0)
+          else
+            sync!(0)
+        ||
+          if (not (se = NONE))
+          then
+            se!(msg),
+            msg!(2),
+            sync!(0)
+          else
+            sync!(0)
+        ||
+          s!(msg),
+          msg!(2),
+          sync?(pof),
+          sync?(pof),
+          cellid(self,x,y,n,nw,w,sw,s,se,e,ne,0) ]
+    else
+      self?(msg), 
+      msg?(typ),
+      if (typ = 0)
+      then 
+        [ msg?(destx), 
+          msg?(desty), 
+          msg?(chan),
+          if (desty = y)
+          then 
+            [ if (destx = x)
+              then 
+                [ new(msg2), 
+                  chan!(msg2), 
+                  msg2!(1),
+                  msg2!(x),
+                  msg2!(y),
+                  msg2!(self),
+                  msg2?(srcx), 
+                  msg2?(srcy),
+                  if (not (srcy = (y+1)))
+                  then #println("Aïe, mais c'est quoi ça, je crashe, ("+srcx+", "+srcy+") veut me ("+x+", "+y+") parler" )
+                  else 
+                    [ if (srcx = x-1)
+                      then cellgen2(self,x,y,xmax,ymax,n,chan,w,sw,s,se,e,ne,v)
+                      else 
+                        if (srcx = x)
+                        then cellgen2(self,x,y,xmax,ymax,chan,nw,w,sw,s,se,e,ne,v)
+                        else
+                          if (srcx = x+1)
+                          then cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,chan,v)
+                          else #println("Aïe, mais c'est quoi ça, je crashe, ("+srcx+", "+srcy+") veut me ("+x+", "+y+") parler" )
+                    ] ]
+              else
+                if (destx > x)
+                then
+                  [ new(msg2),
+                    [ msg2!(0),
+                      msg2!(destx),
+                      msg2!(desty),
+                      msg2!(chan)
+                    ||
+                      e!(msg2),
+                      cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,v) ] ]
+                else // (destx < x)
+                  [ new(msg2),
+                    [ msg2!(0),
+                      msg2!(destx),
+                      msg2!(desty),
+                      msg2!(chan)
+                    ||
+                      w!(msg2),
+                      cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,v) ] ] ]
+          else
+            [ if (desty < y)
+              then
+                [ new(msg2), 
+                  [ msg2!(0),
+                    msg2!(destx),
+                    msg2!(desty),
+                    msg2!(chan)
+                  ||
+                    if (not (s = NONE))
+                    then 
+                      s!(msg2), 
+                      cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,v) 
+                    else
+                      if (not (w = NONE))
+                      then
+                        w!(msg2),
+                        cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,v)
+                      else #println("Aïe, mais c'est quoi ça, je crashe, on veut me ("+x+", "+y+") faire transmettre un message à ("+destx+", "+desty+") mais je n'ai pas de voisines")
+                  ] ]
+              else #println("Aïe, mais c'est quoi ça, je crashe, on veut me ("+x+", "+y+") faire transmettre un message à ("+destx+", "+desty+") mais je n'ai pas de voisines") ]
+        ]
+      else
+        if (typ = 1)
+        then // on a trouvé un copain
+          [ msg?(srcx),
+            msg?(srcy),
+            msg?(chan),
+            msg!(x),
+            msg!(y),
+            if (not (srcy = y - 1))
+            then #println("Aïe, mais c'est quoi ça, je crashe, ("+srcx+", "+srcy+") veut me ("+x+", "+y+") parler" )
+            else
+              if (srcx = x - 1)
+              then cellgen2(self,x,y,xmax,ymax,n,nw,w,chan,s,se,e,ne,v)
+              else
+                if (srcx = x)
+                then cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,chan,se,e,ne,v)
+                else
+                  if (srcx = x + 1)
+                  then cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,chan,e,ne,v)
+                  else #println("Aïe, mais c'est quoi ça, je crashe, ("+srcx+", "+srcy+") veut me ("+x+", "+y+") parler" ) ]
+        else 
+          if (typ = 2)
+          then // une personne qui avait besoin de moi n'en a plus besoin
+            cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,(v-1))
+          else #println("Aïe, mais c'est quoi ça, je crashe, on me ("+x+", "+y+") dit un type inconnu "+typ)
+    ;
+
+def cellgen(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne) =
+  #println("Génération pour ("+x+", "+y+")"),
+  if ((x<xmax) and (e = NONE))
+  then 
+    new (eself), 
+      [ cellgen(self,x,y,xmax,ymax,n,nw,w,sw,s,se,eself,ne)
+      ||
+        cellgen(eself,x+1,y,xmax,ymax,NONE,NONE,self,s,se,NONE,NONE,NONE)
+      ||
+        cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,eself,ne,-1)]
+  else
+    if ((x=1) and (y<ymax) and (n = NONE))
+    then 
+      new (nself), 
+      cellgen(nself,1,y+1,xmax,ymax,NONE,NONE,NONE,NONE,self,NONE,NONE,NONE)
+    else 
+      if ((x=xmax) and (y=ymax))
+      then
+        cellgen2(self,x,y,xmax,ymax,n,nw,w,sw,s,se,e,ne,-1);
+
+new (root),
+#println("Début"),
+cellgen(root,1,1,10,10,NONE,NONE,NONE,NONE,NONE,NONE,NONE,NONE)

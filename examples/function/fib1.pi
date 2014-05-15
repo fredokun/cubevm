@@ -1,0 +1,7 @@
+
+def Fib(n,res) = if n=1 then res!(1) else if n=2 then res!(1) 
+                 else new(r1,r2),
+                    [ Fib(n-2,r1) || Fib(n-1,r2) ||
+                      r1?(v1),r2?(v2),res!(v1+v2) ] ;
+
+new(r), [ Fib(5,r) || r?(v),#print("Result is : "),#print(v),#println("") ]

@@ -1,0 +1,5 @@
+// this illustrates chain reaction (*not* explosive !)
+new(c,d,e),
+ [ c!(3),e?(x),#println("x = "+x)
+   || react(c),c?(x),d!(x*x),c?(y),e!(x+y)
+   || react(d),d?(x),c!(2*x) ]

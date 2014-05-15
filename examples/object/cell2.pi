@@ -1,0 +1,11 @@
+
+// a deterministic version
+
+def Cell(val,fetch,get,set) =   
+         fetch?(x),get!val,Cell(val,fetch,get,set)
+      ++ set?(nval),Cell(nval,fetch,get,set);
+
+def Printer(print) = print?(x),#println(x),Printer(print);
+
+new(f),new(g),new(s),
+  [ s!"Hello",f!1,s!" ",f!1,s!"World",f!1 || {f,s},Cell(0,f,g,s) || {g},Printer(g) ]

@@ -1,0 +1,7 @@
+
+def GenNatDecr(n,out) = if n > 0 then out!(n), GenNatDecr(n-1,out);
+
+def FactStream(in,n,res,r) = if n = 0 then r!(res) else in?(m),FactStream(in,n-1,res*m,r);
+
+new(r),new(c), 
+  [ GenNatDecr(10,c) || FactStream(c,10,1,r) || r?(v),#println("Result is = "+v) ]

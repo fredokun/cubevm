@@ -1,0 +1,14 @@
+
+// this is a rather non-trivial deadlock example
+
+def Pass(i,o,c,n) = i?(x),if x = c then #println("OK "+n) 
+                          else [ o!x || Pass(i,o,c,n+1)];
+
+def Process(i,o) = new(c),[ Pass(i,o,c,0) || o!c ];
+
+
+//new(l1),new(l2),
+//    [ Process(l1,l2) || Process(l2,l1) ]
+
+new(l1),new(l2),new(l3), 
+  [ Process(l1,l2) || Process(l2,l3) || Process(l3,l1) ]

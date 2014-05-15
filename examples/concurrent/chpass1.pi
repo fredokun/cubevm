@@ -1,0 +1,6 @@
+
+// a minimal channel passing program
+
+new(a),
+  [ new(c),[ c?(x),#println(x) || a!(c) ] || a?(y),y!("Got it") ]
+

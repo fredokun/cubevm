@@ -1,0 +1,5 @@
+
+
+#println("arg[0] is "+#arg(0)),
+#println("arg[1] is "+#arg(1)),
+#println("arg[2] is "+#arg(2))

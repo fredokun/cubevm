@@ -1,0 +1,5 @@
+
+def Fact(n, c) = if n = 0 then c!(1)
+	else new(cc), [ Fact(n-1,cc) || cc?(v), c!(v*n) ];
+
+new(pr), [ Fact(10, pr) || pr?(v), #println("Result is = "+v) ] 

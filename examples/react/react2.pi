@@ -1,0 +1,10 @@
+
+// test of reactive mode
+
+def React1(c,x) = c?(d),d!(x),own(d),d?(y),#println(y),React1(*);
+
+def React2(c) = c?(x),c!(2*x),React2(*);
+
+new(c1,c2),
+[ c1!(c2) || react(c1),React1(c1,10) || react(c2),React2(c2) ]
+

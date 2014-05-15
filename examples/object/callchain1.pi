@@ -1,0 +1,15 @@
+
+def ClassA(self,return,val,next,nextret) = 
+         self?(meth), if meth=0 then next!0,next!val,sown(nextret),nextret?(v),return!v;
+
+def ClassB(self,return,val) = 
+         self?(meth), if meth=0 then self?(v),return!v+val;
+
+// main program
+
+new(selfA1),new(retA1),new(selfA2),new(retA2),new(selfB),new(retB), 
+  [ react(selfA1,retA1),ClassA(selfA1,retA1,10,selfA2,retA2) ||
+    react(selfA2,retA2),ClassA(selfA2,retA2,100,selfB,retB) ||
+    react(selfB,retB),ClassB(selfB,retB,1000) ||
+    selfA1!0,retA1?(res),#println("Result = "+res) ]
+

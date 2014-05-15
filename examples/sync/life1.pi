@@ -1,0 +1,40 @@
+
+def CellNoTick(start,end , count,gcount, ul, up, ur, le, ri, dl, do, dr, nbv) =
+   [ ul?(x),CellNoTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x) ]
+++ [ up?(x),CellNoTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x) ]
+++ [ ur?(x),CellNoTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x) ]
+++ [ le?(x),CellNoTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x) ]
+++ [ ri?(x),CellNoTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x) ]
+++ [ dl?(x),CellNoTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x) ]
+++ [ do?(x),CellNoTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x) ]
+++ [ dr?(x),CellNoTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x) ]
+++ [ start?(n), if ul<>None then ul!1,
+                if up<>None then up!1,
+                if ur<>None then up!1,
+                if le<>None then le!1,
+                if ri<>None then ri!1,
+                if dl<>None then dl!1,
+                if do<>None then do!1,
+                if dr<>None then dr!1,
+                gcount!1,gcount?(m),
+                if n<m 
+                then start!n,
+                     CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv,m)
+                else CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv,m) ];
+
+def CellTick(start, end, count,gcount, ul, up, ur, le, ri, dl, do, dr, nbv,nbcells) =
+   [ ul?(x),CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x,nbcells) ]
+++ [ up?(x),CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x,nbcells) ]
+++ [ ur?(x),CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x,nbcells) ]
+++ [ le?(x),CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x,nbcells) ]
+++ [ ri?(x),CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x,nbcells) ]
+++ [ dl?(x),CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x,nbcells) ]
+++ [ do?(x),CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x,nbcells) ]
+++ [ dr?(x),CellTick(start,end,count,gcount,ul,up,ur,le,ri,dl,do,dr,nbv+x,nbcells) ]
+++ [ end?(n),if nbv>0 and nbv<3 
+             then [ if n<nbcells then end!n,count!1,CellNoTick(start,end,count,gcount,ul,up,ur,le,dl,do,dr,nbv) else CellNoTick(start,end,count,gcount,ul,up,ur,le,dl,do,dr,nbv) ]
+             else if n<nbcells then end!n ];
+
+def Sync(start,end,finish,count1,count2) =
+   [ start?(n),Sync(start,end,finish,count1+1,count2) ]
+++ [ end?(n),if count2+1=count1 then finish!1, Sync(start,end,finish,0,0) ]

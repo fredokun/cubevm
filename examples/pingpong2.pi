@@ -1,0 +1,24 @@
+
+def Pinger(ping,pong,fuel) = 
+          ping?(x),                             // input on ping
+          fuel!(),                              // energy consumption
+          #print("Pinger: "),#println(x),       // print value
+                             pong!(x),          // answer 
+                             Pinger(*);         // recursion
+
+def Ponger(ping,pong,fuel) = 
+          pong?(x),                             // input on pong
+          fuel!(),                              // energy consumption
+          #print("Ponger: "),#println(x),       // print value
+                             ping!(x),          // answer 
+                             Ponger(*);         // recursion
+
+
+def Fuel(fuel,n) = if n>0 then fuel?(),Fuel(fuel,n-1);
+
+// main program
+
+new(ping,pong,fuel),
+ [ Pinger(ping,pong,fuel) || Ponger(ping,pong,fuel) 
+   || Fuel(fuel,300) || ping!("beep") ]
+

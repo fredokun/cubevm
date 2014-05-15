@@ -1,0 +1,6 @@
+
+def Cell(self,return,val) =
+  self?(m),case #fst(m) of
+            [ :get -> return!val,Cell(*)
+              :set -> Cell(self,return,val+#snd(arg)) ],
+            #println("Unknow message"),Cell(*);

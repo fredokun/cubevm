@@ -1,0 +1,15 @@
+
+def RDV(join,n,max,rdv) = 
+   join?(),if n=max then rdv!(),RDV(join,0,max,rdv) 
+            else RDV(join,n+1,max,rdv);
+
+def Launch(join,n,max) = 
+   if n<=max 
+   then 
+     [ Launch(join,n+1,max)  
+       || join!(),#println("Join by "+n) ];
+
+new(join,rdv), [ Launch(join,1,1000) || RDV(join,1,1000,rdv)
+                 || rdv?(),#println("Rendez-vous done") ]
+
+ 

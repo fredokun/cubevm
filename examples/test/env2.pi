@@ -1,0 +1,11 @@
+// test of environment size computation
+// with choice
+
+def Call2(x,y,z) = x?(), [ new(c), y!(c) ] ++ [ new(d),z!(d) ];
+
+
+new(x,y,z),
+  [ Call2(x,y,z) || x!() 
+    || y?(v),#println("Received on y")
+    || z?(w),#println("Received on z") ]
+

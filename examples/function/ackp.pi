@@ -1,0 +1,12 @@
+
+def Ack(n,p,r) = if n = 0 then r!p+1 else 
+                 if p = 0 then #print("[p=0]: ack("),#print(n-1),#print(",1,"),#print(r),#println(")"),
+                               Ack(n-1,1,r)
+                 else
+                   new(r1), [ r1?(pp),#print("["),#print(r1),#print("]: ack("),#print(n-1),#print(",pp="+pp+","),#print(r),#println(")"),
+                                      Ack(n-1,pp,r) 
+                            || #print("[REC]: ack("+n+","),#print(p-1),#print(","),#print(r1),#println(")"),
+                               Ack(n,p-1,r1) ];
+
+// 4,1 pushes the implementation to its limits in term of memory
+new(res), [ Ack(2,3,res) || res?(v),#println("Result = "+v) ]

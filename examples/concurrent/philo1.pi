@@ -1,0 +1,45 @@
+def PhiloThink(id,left,right,cancel,acc,n,max) = 
+      #println("[PHILO "+id+"] : I THINK"),
+      if n<=max
+      then PhiloThink(id,left,right,cancel,acc,n+1,max)
+      else PhiloHungry(id,left,right,cancel,acc);
+
+def PhiloHungry(id,left,right,cancel,acc) =  
+      #println("[PHILO "+id+"] : I AM HUNGRY"),
+      [ left?(x),PhiloWaitRight(id,left,right,cancel,acc) ]
+   ++ [ right?(x),PhiloWaitLeft(id,left,right,cancel,acc) ];
+
+def PhiloWaitRight(id,left,right,cancel,acc) =    
+      #println("[PHILO "+id+"] : I NEED RIGHT CHOPSTICK"),
+      [ right?(rice),cancel?(),cancel?(),PhiloEat(id,left,right,cancel,rice,acc,1,7) ]
+   ++ [ cancel?(),PhiloHungry(id,left,right,cancel,acc) ];
+
+def PhiloWaitLeft(id,left,right,cancel,acc) =    
+      #println("[PHILO "+id+"] : I NEED LEFT CHOPSTICK"),
+      [ left?(rice),cancel?(),cancel?(),PhiloEat(id,left,right,cancel,rice,acc,1,7) ]
+   ++ [ cancel?(),PhiloHungry(id,left,right,cancel,acc) ];
+
+def PhiloEat(id,left,right,cancel,rice,acc,n,max) = 
+      #println("[PHILO "+id+"] : I EAT"),
+      if n<=max
+      then rice?(qty),PhiloEat(id,left,right,cancel,rice,acc+qty,n+1,max)
+      else PhiloThink(id,left,right,cancel,acc,1,5); 
+
+def Bowl(rice,qty) = rice!(qty),Bowl(rice,qty);
+
+def Chopstick(left,right,cancel,rice) = 
+     new(end), [ left!(rice),cancel!(),end!() || 
+                 right!(rice),cancel!(),end!() ||
+                 end?(),end?(),Chopstick(left,right,cancel,rice) ];
+
+def MakePhilos(left,n,max) = 
+      if n<= max
+      then new(right,cancel,rice),
+             [ MakePhilos(right,n+1,max) || 
+               PhiloThink(n,left,right,cancel,0,1,5) ||
+               Bowl(rice,10) ||
+               Chopstick(left,right,cancel,rice) ];
+
+// main process
+
+new(left), MakePhilos(left,1,10)
