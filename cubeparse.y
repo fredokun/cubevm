@@ -167,13 +167,13 @@ defs :  /* empty */
 ;
 
 def :  TOK_DEF TOK_ID { parse_reset_lex_env();  } '(' 
-       params ')' { $$ = ast_create_def($2, GLOBAL_lex_env_size); } 
+       params ')' { $<def>$ = ast_create_def($2, GLOBAL_lex_env_size); } 
        '=' { parse_dig_lex_env();} expr ';'
        { 
          //debug_lex_env();
 	 Definition * def = ast_def_add_expr($<def>7,$10);
          parse_reset_lex_env();
-         $$ = def;
+         $<def>$ = def;
        }
 ;
 
@@ -211,7 +211,7 @@ expr :   '[' { parse_dig_lex_env(); } expr ']'
   //fprintf(stderr,"End = \n");
   //fprint_def(stderr,end,0);
   ast_add_child($1,end); 
-  $$ = $1 
+  $$ = $1 ;
 }       
        | TOK_ID '(' { parse_init_seq_expr(); } args ')'
 { 

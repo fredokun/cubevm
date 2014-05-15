@@ -12,14 +12,14 @@ CCFLAGS=-c -O2 -DNDEBUG -DYYDEBUG=1 -DYYERROR_VERBOSE=1 #-D DEBUG_MEM #-D RUNTIM
 #CCFLAGS=-c -g -DNDEBUG -DYYDEBUG=1 -DYYERROR_VERBOSE=1 -D DEBUG_MEM #-D RUNTIME_STAT #-DPROC_TRACE
 LDFLAGS=  -lm #-pg -lc_p 
 
-EXDBMLIB = ./lib/eXdbm/libeXdbm.a
+EXDBMLIB = ./lib/libeXdbm.a
 
 BISONFLAGS= -t -d -v 
 FLEXARGS= 
 
-INCPATH= ./lib/eXdbm
+INCPATH= ./lib/
 
-LIBPATH= ./lib/eXdbm
+LIBPATH= ./lib/
 
 LIBSRCS= cubealloc.c cubemisc.c cubeast.c cubeprim.c cubestr.c cubecfg.c cubestat.c cubedef.c cubeval.c cubechan.c cubetuple.c cubesched.c
 
