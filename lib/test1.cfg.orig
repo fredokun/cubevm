@@ -1,0 +1,32 @@
+
+# a small list example
+list1 {
+
+  # a boolean variable example
+  var1list1 = TRUE
+
+  StringVar = "320"
+
+  list2 {
+
+    varlist2 = 14
+
+    list3 {
+      
+      varlist3 = "deepest var"
+
+    }
+  }
+	
+  # a real value
+  var2list1 = 1430000000000.000000
+
+}
+
+var1 = 31
+
+#this comment is for the next variable
+var2 = "This is a string"
+
+var3 = AnIdentifier
+

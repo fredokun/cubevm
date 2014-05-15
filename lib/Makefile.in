@@ -1,0 +1,83 @@
+
+# @configure_input@
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+CC = gcc
+AR = ar cru
+RANLIB = @RANLIB@
+
+CFLAGS = @CFLAGS@
+DEFS = @DEFS@
+
+DEPEND = @GCCMAKEDEP@
+
+DATE = $$(@DATEPROG@ +%m%d%y)
+
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+
+LIBSRCS = hash.c parse.c misc.c eXdbm.c
+LIBOBJS = hash.o parse.o misc.o eXdbm.o
+
+LIBINC = hash.h parse.h eXdbm.h eXdbmErrors.h eXdbmTypes.h misc.h
+
+INCPATH = ./
+
+INCDIR = @includedir@
+LIBDIR = @libdir@
+DOCDIR = @datadir@/doc/@PACKAGE_NAME@
+
+LIBNAME = libeXdbm.a
+
+EXAMPLES = test1 test2 test3
+
+all : depend lib examples
+
+build : depend lib examples
+
+depend : $(LIBSRCS)
+	  $(DEPEND) -I$(INCPATH) $(LIBSRCS)
+
+lib : $(LIBOBJS) 
+	$(AR) $(LIBNAME) $(LIBOBJS) 
+	$(RANLIB) $(LIBNAME) 
+
+examples : test1 test2 test3
+
+test1 : test1.o test1.cfg.orig
+	cp test1.cfg.orig test1.cfg
+	$(CC) $< $(LIBNAME) $(LDFLAGS) $(LIBS) -o $@  
+
+test2 : test2.o test1.cfg.orig 
+	cp test1.cfg.orig test1.cfg
+	$(CC) $< $(LIBNAME) $(LDFLAGS) $(LIBS) -o $@  
+
+test3 : test3.o test1.cfg.orig
+	cp test1.cfg.orig test1.cfg
+	$(CC) $< $(LIBNAME) $(LDFLAGS) $(LIBS) -o $@  
+
+.c.o :
+	$(CC) -I$(INCPATH) -c $(CFLAGS) $(DEFS) -o $@ $<
+
+archive : $(LIBINC) $(LIBSRCS) test1.c test2.c test3.c test1.cfg.orig eXdbm.txt
+	cp test1.cfg.orig test1.cfg
+	tar cvzf eXdbm-beta-1.0b1.tar.gz $(LIBINC) $(LIBSRCS) test1.c test2.c test3.c test1.cfg eXdbm.txt
+
+install :
+	cp eXdbmErrors.h eXdbmTypes.h eXdbm.h $(INCDIR)
+	cp libeXdbm.a $(LIBDIR)
+	mkdir $(DOCDIR)
+	cp eXdbm.txt $(DOCDIR)
+	@echo "installation done"
+
+clean :
+	rm -f *.o *~
+
+realclean : clean
+	rm -f *.a $(EXAMPLES) test1.cfg Makefile config.log config.h config.status
+
+cleanall : realclean
+
+
